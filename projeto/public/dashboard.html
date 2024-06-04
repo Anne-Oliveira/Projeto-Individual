@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/sessao.js"></script>
+    <script src="js/alerta.js"></script>
+    <script src="quiz.js"></script>
+
+    <title>Sua Conta</title>
+</head>
+
+<body class="bg_dash">
+
+    <div class="sidenav">
+        <img src="css/imagens/perfil joel.jpeg" alt="Foto de Perfil">
+        <p>olá!<span id="b_usuario">usuário</span></p>
+        <a href="#home">Quiz</a>
+        <a href="#services">Rankings</a>
+        <a href="#contact">Contato</a>
+        <a href="index.html">Sair</a>
+    </div>
+
+    <div class="todos_quiz">
+        <div class="quiz1">Quiz sobre The Last of Us Part I</div>
+        <div class="quiz2">Quiz sobre The Last of Us Part II</div>
+        <div class="quiz3">Quiz sobre The Last of Us: Left Behind</div>
+    </div>
+
+    <!-- Início Quiz 1 -->
+    <div id="box_quiz" class="quiz" style="display: none;">
+        <div id="quiz_inicio" class="quiz">
+            <div id="iniciar_quiz">
+                <div id="titulo">Pronto para testar seus conhecimentos sobre The Last of Us Part I??</div>
+                <button id="btnInicio" class="btn_iniciar" onclick="iniciar()">Pronto</button>
+                <div class="pontos" id="div_pontos"></div>
+            </div>
+            <div id="game" style="display: none;">
+                <div id="div_pergunta" class="pergunta"></div>
+                <div id="respostas">
+                    <div class="btn" id="resposta1" onclick="check(0)"></div>
+                    <div class="btn" id="resposta2" onclick="check(1)"></div>
+                    <div class="btn" id="resposta3" onclick="check(2)"></div>
+                    <div class="btn" id="resposta4" onclick="check(3)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fim Quiz -->
+
+    <!-- Início Quiz 1
+    <div id="box_quiz" class="quiz">
+        <div id="quiz_inicio" class="quiz">
+            <div id="iniciar_quiz">
+                <div id="titulo">Pronto para testar seus conhecimentos?</div>
+                <button id="btnInicio" class="btn_iniciar" onclick="iniciar()">Pronto</button>
+                <div class="pontos" id="div_pontos"></div>
+            </div>
+            <div id="game" style="display: none;">
+                <div id="div_pergunta" class="pergunta"></div>
+                <div id="respostas">
+                    <div class="btn" id="resposta1" onclick="check(0)"></div>
+                    <div class="btn" id="resposta2" onclick="check(1)"></div>
+                    <div class="btn" id="resposta3" onclick="check(2)"></div>
+                    <div class="btn" id="resposta4" onclick="check(3)"></div>
+                </div>
+                <div id="refazer"></div>
+            </div>
+        </div>
+    </div>
+     Fim Quiz -->
+
+</body>
+
+</html>
