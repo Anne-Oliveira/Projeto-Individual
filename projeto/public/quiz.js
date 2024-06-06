@@ -23,11 +23,68 @@ var perguntas_quiz = [
         pergunta: "Qual é o nome do irmão de Joel?",
         alternativas: ["David", "Bill", "Henry", "Tommy"],
         resposta: 3
+    },
+    {
+        pergunta:"Qual é o nome da líder dos Serafitas?",
+        alternativas: ["Emily", "Nora", "Leah", "Isaac"],
+        resposta: 0
+    },
+    {
+        pergunta:"Qual personagem se torna o alvo principal da vingança de Ellie?",
+        alternativas: ["Abby", "Owen", "Manny", "Jesse"],
+        resposta: 0
+    },
+    {
+        pergunta:"Qual é o nome do irmão mais novo de Yara?",
+        alternativas: ["Isaac", "Manny", "Lev", "Owen"],
+        resposta: 2
+    },
+    {
+        pergunta:"Onde Ellie e Dina encontram abrigo durante a tempestade de neve?",
+        alternativas: ["Em um supermercado", "Em uma livraria", "Em um teatro", "Em um shopping"],
+        resposta: 0
+    },
+    {
+        pergunta:"Qual é o nome do livro de piadas que Ellie adora?",
+        alternativas: ["No Pun Intended", "Jokes for Fun", "Laugh Out Loud", "Pun Parade"],
+        resposta: 0
+    },
+    {
+        pergunta:"O que Riley planeja fazer antes de se reencontrar com Ellie?",
+        alternativas: ["Se juntar aos Vaga-lumes", "Fugir para outra cidade", "Encontrar sua família", "Procurar Joel"],
+        resposta: 0
+    },
+    {
+        pergunta:"Qual é o jogo de arcade que Ellie e Riley jogam juntas?",
+        alternativas: ["Mortal Kombat", "The Turning", "Street Fighter", "Pac-Man"],
+        resposta: 1
+    },
+    {
+        pergunta:"Em que lugar Ellie e Riley se escondem após serem perseguidas por infectados?",
+        alternativas: ["Em uma loja de brinquedos", "Em uma loja de roupas", "Em uma farmácia", "Em uma loja de eletrônicos"],
+        resposta: 1
+    },
+    {
+        pergunta:"Qual é a música que Joel toca para Ellie no violão?",
+        alternativas: ["Take On Me", "True Faith", "Through the Valley", "Future Days"],
+        resposta: 3
+    },
+    {
+        pergunta:"Quem é o líder dos Lobos(WLF)?",
+        alternativas: ["Isaac", "Manny", "Owen", "Jerry"],
+        resposta: 0
     }
 ];
 
 var pergunta_atual = 0;
 var pontos = 0;
+
+function quiz1() {
+    div_quiz1.style.display = "none";
+    div_quiz2.style.display = "none";
+    div_quiz3.style.display = "none";
+    box_quiz.style.display = "flex";
+}
 
 function iniciar() {
 
@@ -80,10 +137,43 @@ function check(selected) {
             selectedElement.classList.remove('correto');
             selectedElement.classList.remove('errado');
             corretaElement.classList.remove('correto');
-            pontos = 0
         }
     }, 400)
 
 }
 
 iniciar();
+
+
+
+function cadastrarNota() {
+    // Enviando o valor da nova input
+    var id = sessionStorage.ID_USUARIO;
+
+    fetch("/pontuacao/cadastrarNota", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            NotaServer: pontos,
+            UsuarioServer: id
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na solicitação: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Nota cadastrada com sucesso:', data);
+    })
+    .catch(error => {
+        console.error('Erro ao cadastrar a nota:', error);
+    });
+
+    setTimeout(() => {
+        window.location = "dashboard.html";
+      }, "3000");
+}
