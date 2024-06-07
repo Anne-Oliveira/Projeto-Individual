@@ -176,9 +176,11 @@ p {
     text-align: justify;
 }
 
-.historia img {
+.imagem {
     border-radius: 10px;
     margin-left: 40px;
+    max-width: 100%;
+    width: 800px;
 }
 
 .historia a {
@@ -875,6 +877,29 @@ button:hover {
     border-radius: 15px;
     width: 550px;
     justify-content: flex-start;
+}
+
+.introducaodash{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 220px;
+    width: 520px;
+    border-radius: 30px;
+    margin-top: 280px;
+    background-color: white;
+}
+
+
+.teste{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;    
+    width: 86vw;
+    margin-left: 197px;
+
 }
 
 /* quiz */

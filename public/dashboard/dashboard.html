@@ -7,14 +7,13 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="css/imagens/tlou-logo.ico">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/sessao.js"></script>
-    <script src="js/alerta.js"></script>
-    <script src="quiz.js"></script>
+    <script src="../js/sessao.js"></script>
+    <script src="../js/alerta.js"></script>
 
     <title>Sua Conta</title>
 </head>
 
-<body class="bg_dash" >
+<body class="bg_dash" onload="obterDadosGrafico(), ultimaRodada(), ultimaPontuacao(), medianota(), mediageral()">
 
     <div class="sidenav">
         <img src="../css/imagens/perfil joel.jpeg" alt="Foto de Perfil">
@@ -24,10 +23,27 @@
         <a href="quiz.html">Quiz</a>
         <a href="#services">Rankings</a>
         <a href="#contact">Contato</a>
-        <a href="index.html">Sair</a>
+        <a onclick="limparSessao()">Sair</a>
     </div>
 
-    
+    <div class="teste">
+        <div id="dashintrod" class="introducaodash"><br>
+            <h3> O último dia em que você realizou o quiz foi: <span style="color: #556B2F;" id="rodada">Ainda Não Fez</span></h3>
+            <h3>A sua última pontuação foi:<span style="color: #556B2F;" id="ultimanota">Ainda Não Fez</span> </h3>
+            <h3> A sua média de acertos é de: <span style="color: #556B2F;" id="medianota">Ainda Não Fez</span></h3><br>
+            <h3> O número geral de acertos é de: <span style="color: #556B2F;" id="mediageral">Ainda Não Fez</span></h3><br>
+        </div>
+    </div>
+
+    <div class="div_graficos">
+        <div class="ultimaPontuacao">
+            <div class="maximo"><canvas id="Grafico1"></canvas></div>
+        </div>
+        <div class="historico">
+            <canvas id="Grafico2"></canvas>
+        </div>
+        
+    </div>
 
 </body>
 
@@ -41,26 +57,25 @@
   
   
       document.getElementById('b_usuario').innerHTML = sessionStorage.NOME_USUARIO;
-      document.getElementById('b_usuario2').innerHTML = sessionStorage.NOME_USUARIO;
       let proximaAtualizacao;
   
-      var fk_usuario = sessionStorage.ID_USUARIO;
-      console.log(`${fk_usuario}`);
+      var fkUsuario = sessionStorage.ID_USUARIO;
+      console.log(`${fkUsuario}`);
   
       function obterDadosGrafico() {
-          fetch(`/medidas/ultimas/${fk_usuario}`, { cache: 'no-store' })
+          fetch(`/medidas/ultimas/${fkUsuario}`, { cache: 'no-store' })
               .then(response => response.json())
               .then(data => {
                   console.log(data);
-                  var ctx = document.getElementById('meuGrafico').getContext('2d');
-                  var acertos = data.map(item => item.nota);
+                  var ctx = document.getElementById('Grafico1').getContext('2d');
+                  var nota = data.map(item => item.acertos);
                   var labels = data.map((_, index) => `Tentativa ${index + 1}`);
   
                   var chartData = {
                       labels: labels,
                       datasets: [{
                           label: 'Acertos',
-                          data: acertos,
+                          data: nota,
                           backgroundColor: 'rgba(75, 192, 192, 0.2)',
                           borderColor: 'rgba(75, 192, 192, 1)',
                           borderWidth: 1
@@ -164,67 +179,18 @@
       }
   
       function medianota() {
-          fetch(`/medidas/medianota/${fk_usuario}`, { cache: 'no-store' })
+          fetch(`/medidas/medianota/${fkUsuario}`, { cache: 'no-store' })
               .then(response => response.json())
               .then(data => {
                   var mediaPontuacao = data.map(item => item.mediaPontuacao);
-                  var ctx3 = document.getElementById('Grafico3').getContext('2d');
-                  var labels = ['Média Geral'];
                   document.getElementById('medianota').innerHTML = mediaPontuacao;
-                  var chartData = {
-                      labels: labels,
-                      datasets: [
-                          {
-                              label: 'Média',
-                              data: mediaPontuacao,
-                              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                              borderColor: 'rgba(75, 192, 192, 1)',
-                              borderWidth: 1
-                          }
-                      ]
-                  };
-  
-                  var config = {
-                      type: 'bar',
-                      data: chartData,
-                      options: {
-                          scales: {
-                              y: {
-                                  beginAtZero: true,
-                                  max: 10
-                              }
-                          },
-                          plugins: {
-                              title: {
-                                  display: true,
-                                  text: 'Média Geral',
-                                  font: {
-                                      size: 24
-                                  },
-                                  color: '#000000'
-                              },
-                              annotation: {
-                                  annotations: {
-                                      line1: {
-                                          type: 'line',
-                                          yMin: 5,
-                                          yMax: 5,
-                                          borderColor: 'black',
-                                      }
-                                  }
-                              }
-                          }
-                      }
-                  };
-  
-                  new Chart(ctx3, config);
-                  console.log(data);
+                 
               })
               .catch(error => console.error('Falha na captura de acertos(media)', error));
       }
   
-      function ultimaPont() {
-          fetch(`/medidas/ultimaPont/${fk_usuario}`, { cache: 'no-store' })
+      function ultimaPontuacao() {
+          fetch(`/medidas/ultimaPontuacao/${fkUsuario}`, { cache: 'no-store' })
               .then(response => response.json())
               .then(data => {
   
@@ -238,7 +204,7 @@
       }
   
       function ultimaRodada() {
-          fetch(`/medidas/ultimaRodada/${fk_usuario}`, { cache: 'no-store' })
+          fetch(`/medidas/ultimaRodada/${fkUsuario}`, { cache: 'no-store' })
               .then(response => response.json())
               .then(data => {
   
@@ -250,4 +216,68 @@
               })
               .catch(error => console.error('Falha na captura de rodada', error));
       }
+      
+      function mediageral() {
+        fetch(`/medidas/mediageral/`, { cache: 'no-store' })
+              .then(response => response.json())
+              .then(data => {
+  
+                  var acertos_gerais = data.map(item => item.AcertosGerais);
+                  console.log(data);
+                  document.getElementById('mediageral').innerHTML = acertos_gerais;
+  
+              })
+              .catch(error => console.error('Falha na captura de acerto geral', error));
+}
+
+function buscarPersonagem() {
+        fetch(`/medidas/buscarPersonagem`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                var albumPersonagem = data.map(album => album.NumeroUsuarios);
+                var ctx5 = document.getElementById('Grafico2').getContext('2d');
+                var label= ['Presonagens'];
+                const chartData = {
+                    labels: [
+                        'Joel',
+                        'Ellie',
+                        'Tess',
+                        'Tommy',
+                        'Abby',
+                        'Dina'
+                    ],
+                    datasets: [
+                        {
+                             label:['Joel'],
+                            data: albumPersonagem,
+                            backgroundColor: ['#556B2F'],
+                        }
+                    ],
+
+
+                    
+                };
+
+
+                var config5 = {
+                    type: 'doughnut',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                };
+
+
+                new Chart(ctx5, config5); // Corrigido para 'Chart'
+            })
+            .catch(error => console.error('Falha na captura dos albuns', error));
+    }
+
+
+      document.addEventListener("DOMContentLoaded", function() {
+        obterDadosGrafico();
+      })
+
+      
   </script>  
