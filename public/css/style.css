@@ -837,49 +837,7 @@ button:hover {
     border-bottom-left-radius: 20px;
 }
 
-.main {
-    margin-left: 350px;
-    padding: 20px 20px 20px 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.info {
-    padding: 20px;
-    background-color: rgba(217, 217, 217, 0.6); 
-    border-radius: 15px;
-    margin-bottom: 30px;
-}
-
-.info2-3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    margin: 0;
-}
-
-.info2 {
-    margin-left: 350px;
-    margin-right: 10px;
-    padding: 20px;
-    background-color: rgba(217, 217, 217, 0.4); 
-    border-radius: 15px;
-    width: 550px;
-    justify-content: flex-start;
-}
-
-.info3 {
-    padding: 20px;
-    background-color: rgba(217, 217, 217, 0.4); 
-    border-radius: 15px;
-    width: 550px;
-    justify-content: flex-start;
-}
-
-.introducaodash{
+.info_geral{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -887,27 +845,51 @@ button:hover {
     height: 220px;
     width: 520px;
     border-radius: 30px;
-    margin-top: 280px;
-    background-color: white;
+    background-color: rgba(217, 217, 217, 0.3);
+    margin-top: 20px;
+}
+
+.info_geral h3 {
+    font-size: 20px;
 }
 
 
 .teste{
     display: flex;
-    align-items: center;
     justify-content: space-around;
-    flex-direction: row;    
-    width: 86vw;
-    margin-left: 197px;
-
+    flex-direction: column;    
+    width: 520px;
+    height: 470px;
+    margin-left: 110px;
+    margin-top: 20px;
 }
 
+.ultimaPontuacao {
+    border-radius: 30px;
+    background-color: rgba(217, 217, 217, 0.3);
+    margin-top: 40px;
+    margin-left: 100px;
+    width: 450px;
+}
+
+.historico_personagens {
+    border-radius: 30px;
+    background-color: rgba(217, 217, 217, 0.3);
+    margin-top: 20px;
+    margin-left: 100px;
+    width: 450px;
+}
+
+.media_geral {
+    border-radius: 30px;
+    background-color: rgba(217, 217, 217, 0.3);
+    margin-top: 20px;
+    width: 520px;
+}
 /* quiz */
 .bg_dash {
     background-color: #ffffff;
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin-left: 250px;
 }
@@ -1016,7 +998,7 @@ button:hover {
 }
 
 .errado {
-    background-color: #990000;
+    background-color: #811313;
     transition: background-color 100ms linear;
 }
 

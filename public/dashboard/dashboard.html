@@ -13,25 +13,30 @@
     <title>Sua Conta</title>
 </head>
 
-<body class="bg_dash" onload="obterDadosGrafico(), ultimaRodada(), ultimaPontuacao(), medianota(), mediageral()">
+<body class="bg_dash"
+    onload="obterDadosGrafico(), ultimaRodada(), ultimaPontuacao(), medianota(), mediageral(), buscarPersonagem(), mediageralGraph()">
 
     <div class="sidenav">
-        <img src="../css/imagens/perfil joel.jpeg" alt="Foto de Perfil">
+        <img id="b_foto" alt="Foto de Perfil">
         <div class="hello">
             <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
         </div>
         <a href="quiz.html">Quiz</a>
-        <a href="#services">Rankings</a>
-        <a href="#contact">Contato</a>
         <a onclick="limparSessao()">Sair</a>
     </div>
 
     <div class="teste">
-        <div id="dashintrod" class="introducaodash"><br>
-            <h3> O último dia em que você realizou o quiz foi: <span style="color: #556B2F;" id="rodada">Ainda Não Fez</span></h3>
+        <div id="info" class="info_geral"><br>
+            <h3> O último dia em que você realizou o quiz foi: <span style="color: #556B2F;" id="rodada">Ainda Não
+                    Fez</span></h3>
             <h3>A sua última pontuação foi:<span style="color: #556B2F;" id="ultimanota">Ainda Não Fez</span> </h3>
-            <h3> A sua média de acertos é de: <span style="color: #556B2F;" id="medianota">Ainda Não Fez</span></h3><br>
-            <h3> O número geral de acertos é de: <span style="color: #556B2F;" id="mediageral">Ainda Não Fez</span></h3><br>
+            <h3> A sua média de acertos é de: <span style="color: #556B2F;" id="medianota">Ainda Não Fez</span></h3>
+            <h3> O número geral de acertos é de: <span style="color: #556B2F;" id="mediageral">Ainda Não Fez</span></h3>
+            <br>
+        </div>
+
+        <div class="media_geral">
+            <canvas id="Grafico3"></canvas>
         </div>
     </div>
 
@@ -39,10 +44,9 @@
         <div class="ultimaPontuacao">
             <div class="maximo"><canvas id="Grafico1"></canvas></div>
         </div>
-        <div class="historico">
-            <canvas id="Grafico2"></canvas>
+        <div class="historico_personagens">
+            <canvas id="Grafico2" style="height: 400px;"></canvas>
         </div>
-        
     </div>
 
 </body>
@@ -51,192 +55,135 @@
 
 <script>
     function ver() {
-              document.getElementById('direcao').style.display = "flex";
-              document.getElementById('dashintrod').style.display = "none";
-          }
-  
-  
-      document.getElementById('b_usuario').innerHTML = sessionStorage.NOME_USUARIO;
-      let proximaAtualizacao;
-  
-      var fkUsuario = sessionStorage.ID_USUARIO;
-      console.log(`${fkUsuario}`);
-  
-      function obterDadosGrafico() {
-          fetch(`/medidas/ultimas/${fkUsuario}`, { cache: 'no-store' })
-              .then(response => response.json())
-              .then(data => {
-                  console.log(data);
-                  var ctx = document.getElementById('Grafico1').getContext('2d');
-                  var nota = data.map(item => item.acertos);
-                  var labels = data.map((_, index) => `Tentativa ${index + 1}`);
-  
-                  var chartData = {
-                      labels: labels,
-                      datasets: [{
-                          label: 'Acertos',
-                          data: nota,
-                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                          borderColor: 'rgba(75, 192, 192, 1)',
-                          borderWidth: 1
-                      }]
-                  };
-  
-                  var config = {
-                      type: 'bar',
-                      data: chartData,
-                      options: {
-                          scales: {
-                              y: {
-                                  beginAtZero: true,
-                                  max: 10
-                              }
-                          },
-                          plugins: {
-                              title: {
-                                  display: true,
-                                  text: 'Histórico de Acertos',
-                                  font: {
-                                      size: 24
-                                  },
-                                  color: '#000000'
-                              },
-                              annotation: {
-                                  annotations: {
-                                      line1: {
-                                          type: 'line',
-                                          yMin: 5,
-                                          yMax: 5,
-                                          borderColor: 'black',
-                                      }
-                                  }
-                              }
-                          }
-                      }
-                  };
-  
-                  new Chart(ctx, config);
-              })
-              .catch(error => console.error('Falha na captura de acertos', error));
-      }
-  
-      function maximoMinimo() {
-          fetch(`/medidas/maximoMinimo/${fk_usuario}`, { cache: 'no-store' })
-              .then(response => response.json())
-              .then(data => {
-                  var MaiorNota = data.map(item => item.MaiorNota);
-                  var MenorNota = data.map(item => item.MenorNota);
-                  var ctx2 = document.getElementById('Grafico2').getContext('2d');
-                  var labels = data.map((_, index) => `Tentativa ${index + 1}`);
-  
-                  var chartData = {
-                      labels: labels,
-                      datasets: [
-                          {
-                              label: 'Maior Nota',
-                              data: MaiorNota,
-                              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                              borderColor: 'rgba(75, 192, 192, 1)',
-                              borderWidth: 1
-                          },
-                          {
-                              label: 'Menor Nota',
-                              data: MenorNota,
-                              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                              borderColor: 'rgba(255, 99, 132, 1)',
-                              borderWidth: 1
-                          }
-                      ]
-                  };
-  
-                  var config = {
-                      type: 'bar',
-                      data: chartData,
-                      options: {
-                          scales: {
-                              y: {
-                                  beginAtZero: true,
-                                  max: 10
-                              }
-                          },
-                          plugins: {
-                              title: {
-                                  display: true,
-                                  text: 'Maior/Menor Nota',
-                                  font: {
-                                      size: 24
-                                  },
-                                  color: '#000000'
-                              }
-                          }
-                      }
-                  };
-  
-                  new Chart(ctx2, config);
-                  console.log(data);
-              })
-              .catch(error => console.error('Falha na captura de acertos(max,min)', error));
-      }
-  
-      function medianota() {
-          fetch(`/medidas/medianota/${fkUsuario}`, { cache: 'no-store' })
-              .then(response => response.json())
-              .then(data => {
-                  var mediaPontuacao = data.map(item => item.mediaPontuacao);
-                  document.getElementById('medianota').innerHTML = mediaPontuacao;
-                 
-              })
-              .catch(error => console.error('Falha na captura de acertos(media)', error));
-      }
-  
-      function ultimaPontuacao() {
-          fetch(`/medidas/ultimaPontuacao/${fkUsuario}`, { cache: 'no-store' })
-              .then(response => response.json())
-              .then(data => {
-  
-  
-                  var ultimaNota = data.map(item => item.UltimaPontuacao);
-                  console.log(data);
-                  document.getElementById('ultimanota').innerHTML = ultimaNota;
-  
-              })
-              .catch(error => console.error('Falha na captura de acertos(max,min)', error));
-      }
-  
-      function ultimaRodada() {
-          fetch(`/medidas/ultimaRodada/${fkUsuario}`, { cache: 'no-store' })
-              .then(response => response.json())
-              .then(data => {
-  
-  
-                  var ultimarodadaquiz = data.map(item => item.ultima_rodada);
-                  console.log(data);
-                  document.getElementById('rodada').innerHTML = ultimarodadaquiz;
-  
-              })
-              .catch(error => console.error('Falha na captura de rodada', error));
-      }
-      
-      function mediageral() {
-        fetch(`/medidas/mediageral/`, { cache: 'no-store' })
-              .then(response => response.json())
-              .then(data => {
-  
-                  var acertos_gerais = data.map(item => item.AcertosGerais);
-                  console.log(data);
-                  document.getElementById('mediageral').innerHTML = acertos_gerais;
-  
-              })
-              .catch(error => console.error('Falha na captura de acerto geral', error));
-}
+        document.getElementById('direcao').style.display = "flex";
+        document.getElementById('dashintrod').style.display = "none";
+    }
 
-function buscarPersonagem() {
+
+    document.getElementById('b_usuario').innerHTML = sessionStorage.NOME_USUARIO;
+    document.getElementById('b_foto').innerHTML = sessionStorage.FOTO_USUARIO;
+    let proximaAtualizacao;
+
+    var fkUsuario = sessionStorage.ID_USUARIO;
+    console.log(`${fkUsuario}`);
+
+    function obterDadosGrafico() {
+        fetch(`/medidas/ultimas/${fkUsuario}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var ctx = document.getElementById('Grafico1').getContext('2d');
+                var nota = data.map(item => item.acertos);
+                var labels = data.map((_, index) => `Tentativa ${index + 1}`);
+
+                var chartData = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Acertos',
+                        data: nota,
+                        backgroundColor: '#2d361d',
+                        borderColor: '#2d361d',
+                        borderWidth: 1
+                    }]
+                };
+
+                var config = {
+                    type: 'line',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Seus Acertos',
+                                font: {
+                                    size: 16
+                                },
+                                color: '#000000'
+                            },
+                            annotation: {
+                                annotations: {
+                                    line1: {
+                                        type: 'line',
+                                        yMin: 5,
+                                        yMax: 5,
+                                        borderColor: 'black',
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                new Chart(ctx, config);
+            })
+            .catch(error => console.error('Falha na captura de acertos', error));
+    }
+
+    function medianota() {
+        fetch(`/medidas/medianota/${fkUsuario}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                var mediaPontuacao = data.map(item => item.mediaPontuacao);
+                document.getElementById('medianota').innerHTML = mediaPontuacao;
+
+            })
+            .catch(error => console.error('Falha na captura de acertos(media)', error));
+    }
+
+    function ultimaPontuacao() {
+        fetch(`/medidas/ultimaPontuacao/${fkUsuario}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+
+
+                var ultimaNota = data.map(item => item.UltimaPontuacao);
+                console.log(data);
+                document.getElementById('ultimanota').innerHTML = ultimaNota;
+
+            })
+            .catch(error => console.error('Falha na captura de acertos(max,min)', error));
+    }
+
+    function ultimaRodada() {
+        fetch(`/medidas/ultimaRodada/${fkUsuario}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+
+
+                var ultimarodadaquiz = data.map(item => item.ultima_rodada);
+                console.log(data);
+                document.getElementById('rodada').innerHTML = ultimarodadaquiz;
+
+            })
+            .catch(error => console.error('Falha na captura de rodada', error));
+    }
+
+    function mediageral() {
+        fetch(`/medidas/mediageral/`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+
+                var acertos_gerais = data.map(item => item.AcertosGerais);
+                console.log(data);
+                document.getElementById('mediageral').innerHTML = acertos_gerais;
+
+            })
+            .catch(error => console.error('Falha na captura de acerto geral', error));
+    }
+
+    function buscarPersonagem() {
         fetch(`/medidas/buscarPersonagem`, { cache: 'no-store' })
             .then(response => response.json())
             .then(data => {
-                var albumPersonagem = data.map(album => album.NumeroUsuarios);
+                var personagemData = data.map(personagem => personagem.NumeroUsuarios);
                 var ctx5 = document.getElementById('Grafico2').getContext('2d');
-                var label= ['Presonagens'];
+                var label = ['Personagens'];
                 const chartData = {
                     labels: [
                         'Joel',
@@ -248,23 +195,46 @@ function buscarPersonagem() {
                     ],
                     datasets: [
                         {
-                             label:['Joel'],
-                            data: albumPersonagem,
-                            backgroundColor: ['#556B2F'],
+                            label: [''],
+                            data: personagemData,
+                            backgroundColor: ['#556B2F', '#990000', '#651717', '#36451e', '#2d361d', '#811313'],
                         }
                     ],
 
 
-                    
-                };
 
+                };
 
                 var config5 = {
                     type: 'doughnut',
                     data: chartData,
                     options: {
-                        responsive: true,
-                        maintainAspectRatio: false
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Personagens Escolhidos',
+                                font: {
+                                    size: 16
+                                },
+                                color: '#000000'
+                            },
+                            annotation: {
+                                annotations: {
+                                    line1: {
+                                        type: 'line',
+                                        yMin: 5,
+                                        yMax: 5,
+                                        borderColor: 'black',
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
 
@@ -274,10 +244,87 @@ function buscarPersonagem() {
             .catch(error => console.error('Falha na captura dos albuns', error));
     }
 
+    function mediageralGraph() {
+        fetch(`/medidas/mediageralGraph/`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                var labels = data.map(item => item.NomeUsuario);
+                var acertos = data.map(item => item.AcertosTotal);
+                var ctx3 = document.getElementById('Grafico3').getContext('2d');
 
-      document.addEventListener("DOMContentLoaded", function() {
+                var chartData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Acertos',
+                            data: acertos,
+                            backgroundColor: '#556B2F',
+                            borderColor: '#2d361d',
+                            borderWidth: 1
+                        }
+                    ]
+                };
+
+                var config = {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Últimos Acertos dos Usuários',
+                                font: {
+                                    size: 16
+                                },
+                                color: '#000000'
+                            },
+                            annotation: {
+                                annotations: {
+                                    line1: {
+                                        type: 'line',
+                                        yMin: 5,
+                                        yMax: 5,
+                                        borderColor: 'black',
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                new Chart(ctx3, config);
+                console.log(data);
+            })
+            .catch(error => console.error('Falha na captura de acertos(media)', error));
+    }
+
+    function buscarPersonagem() {
+    var fkUsuario = sessionStorage.ID_USUARIO;
+
+    fetch(`/medidas/buscarFoto/${fkUsuario}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                var fotoPersonagem = data[0].ImagemPersonagem;
+                document.getElementById('b_foto').innerHTML = fotoPersonagem;
+            } else {
+                console.error('Nenhuma imagem encontrada');
+            }
+        })
+        .catch(error => console.error('Falha na captura da imagem do personagem', error));
+}
+
+    
+
+    document.addEventListener("DOMContentLoaded", function () {
         obterDadosGrafico();
-      })
+    })
 
-      
-  </script>  
+
+</script>

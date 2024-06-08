@@ -27,8 +27,16 @@ router.get("/mediageral", function (req, res) {
     medidaController.mediageral(req, res);
 });
 
+router.get("/mediageralGraph", function (req, res) {
+    medidaController.mediageralGraph(req, res);
+});
+
 router.get("/buscarPersonagem", function (req, res) {
-    medidaController.buscarAlbum(req, res);
+    medidaController.buscarPersonagem(req, res);
+});
+
+router.get("/buscarFoto/:fkUsuario", function (req, res) {
+    medidaController.buscarFoto(req, res);
 });
 
 module.exports = router;

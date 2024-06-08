@@ -66,6 +66,22 @@ function mediageral() {
     return database.executar(instrucaoSql);
 }
 
+function mediageralGraph() {
+    var instrucaoSql = `
+        SELECT usuario.nome AS NomeUsuario, 
+        pontuacao.acertos AS AcertosTotal
+        FROM usuario 
+        INNER JOIN pontuacao ON usuario.id = pontuacao.fkUsuario
+        INNER JOIN 
+        (SELECT fkUsuario, MAX(dtHora) AS UltimaTentativa
+        FROM pontuacao
+        GROUP BY fkUsuario) AS ultima_tentativa 
+            ON pontuacao.fkUsuario = ultima_tentativa.fkUsuario 
+            AND pontuacao.dtHora = ultima_tentativa.UltimaTentativa;  
+    `;
+    return database.executar(instrucaoSql);
+}
+
 function buscarPersonagem() {
     
     var instrucaoSql = `
@@ -78,6 +94,18 @@ function buscarPersonagem() {
     return database.executar(instrucaoSql);
 }
 
+function buscarFoto(fkUsuario) {
+    var instrucaoSql = `
+        SELECT p.imagem AS ImagemPersonagem 
+        FROM usuario u 
+        INNER JOIN personagem p ON u.fkPersonagem = p.idPersonagem 
+        WHERE u.id = ${fkUsuario};
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarUltimasMedidas,
     buscarMedidasEmTempoReal,
@@ -85,5 +113,7 @@ module.exports = {
     ultimaPontuacao,
     medianota,
     mediageral,
-    buscarPersonagem
+    buscarPersonagem,
+    mediageralGraph,
+    buscarFoto
 }
