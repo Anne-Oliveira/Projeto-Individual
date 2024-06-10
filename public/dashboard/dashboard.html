@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/sessao.js"></script>
     <script src="../js/alerta.js"></script>
-
     <title>Sua Conta</title>
 </head>
-
-<body class="bg_dash"
-    onload="obterDadosGrafico(), ultimaRodada(), ultimaPontuacao(), medianota(), mediageral(), buscarPersonagem(), mediageralGraph()">
+<body class="bg_dash" onload="obterDadosGrafico(), ultimaRodada(), ultimaPontuacao(), medianota(), mediageral(), buscarPersonagem(), mediageralGraph()">
 
     <div class="sidenav">
-        <img id="b_foto" alt="Foto de Perfil">
+        <img src="../css/imagens/perfil joel.jpeg" alt="Foto de Perfil">
         <div class="hello">
             <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
         </div>
@@ -27,8 +23,7 @@
 
     <div class="teste">
         <div id="info" class="info_geral"><br>
-            <h3> O último dia em que você realizou o quiz foi: <span style="color: #556B2F;" id="rodada">Ainda Não
-                    Fez</span></h3>
+            <h3> O último dia em que você realizou o quiz foi: <span style="color: #556B2F;" id="rodada">Ainda Não Fez</span></h3>
             <h3>A sua última pontuação foi:<span style="color: #556B2F;" id="ultimanota">Ainda Não Fez</span> </h3>
             <h3> A sua média de acertos é de: <span style="color: #556B2F;" id="medianota">Ainda Não Fez</span></h3>
             <h3> O número geral de acertos é de: <span style="color: #556B2F;" id="mediageral">Ainda Não Fez</span></h3>
@@ -50,7 +45,6 @@
     </div>
 
 </body>
-
 </html>
 
 <script>
@@ -61,7 +55,6 @@
 
 
     document.getElementById('b_usuario').innerHTML = sessionStorage.NOME_USUARIO;
-    document.getElementById('b_foto').innerHTML = sessionStorage.FOTO_USUARIO;
     let proximaAtualizacao;
 
     var fkUsuario = sessionStorage.ID_USUARIO;
@@ -206,7 +199,7 @@
                 };
 
                 var config5 = {
-                    type: 'doughnut',
+                    type: 'bar',
                     data: chartData,
                     options: {
                         scales: {
@@ -239,7 +232,7 @@
                 };
 
 
-                new Chart(ctx5, config5); // Corrigido para 'Chart'
+                new Chart(ctx5, config5);
             })
             .catch(error => console.error('Falha na captura dos albuns', error));
     }
@@ -303,23 +296,6 @@
             })
             .catch(error => console.error('Falha na captura de acertos(media)', error));
     }
-
-    function buscarPersonagem() {
-    var fkUsuario = sessionStorage.ID_USUARIO;
-
-    fetch(`/medidas/buscarFoto/${fkUsuario}`, { cache: 'no-store' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                var fotoPersonagem = data[0].ImagemPersonagem;
-                document.getElementById('b_foto').innerHTML = fotoPersonagem;
-            } else {
-                console.error('Nenhuma imagem encontrada');
-            }
-        })
-        .catch(error => console.error('Falha na captura da imagem do personagem', error));
-}
-
     
 
     document.addEventListener("DOMContentLoaded", function () {

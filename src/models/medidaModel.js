@@ -94,18 +94,6 @@ function buscarPersonagem() {
     return database.executar(instrucaoSql);
 }
 
-function buscarFoto(fkUsuario) {
-    var instrucaoSql = `
-        SELECT p.imagem AS ImagemPersonagem 
-        FROM usuario u 
-        INNER JOIN personagem p ON u.fkPersonagem = p.idPersonagem 
-        WHERE u.id = ${fkUsuario};
-    `;
-
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
-
 module.exports = {
     buscarUltimasMedidas,
     buscarMedidasEmTempoReal,
@@ -114,6 +102,5 @@ module.exports = {
     medianota,
     mediageral,
     buscarPersonagem,
-    mediageralGraph,
-    buscarFoto
+    mediageralGraph
 }

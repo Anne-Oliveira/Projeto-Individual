@@ -35,8 +35,6 @@ router.get("/buscarPersonagem", function (req, res) {
     medidaController.buscarPersonagem(req, res);
 });
 
-router.get("/buscarFoto/:fkUsuario", function (req, res) {
-    medidaController.buscarFoto(req, res);
-});
+
 
 module.exports = router;

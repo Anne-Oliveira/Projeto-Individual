@@ -109,22 +109,6 @@ function buscarPersonagem(req, res) {
         })
 }
 
-function buscarFoto(req, res) {
-    var fkUsuario = req.params.fkUsuario;
-
-    medidaModel.buscarFoto(fkUsuario).then(function (resultado) {
-        if (resultado.length > 0) {
-            res.status(200).json(resultado);
-        } else {
-            res.status(204).send("Nenhum resultado encontrado!");
-        }
-    }).catch(function (erro) {
-        console.log(erro);
-        console.log("Houve um erro ao buscar a imagem do personagem.", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
-}
-
 module.exports = {
     buscarUltimasMedidas,
     buscarMedidasEmTempoReal,
@@ -133,6 +117,5 @@ module.exports = {
     medianota,
     mediageral,
     buscarPersonagem,
-    mediageralGraph,
-    buscarFoto
+    mediageralGraph
 }

@@ -8,12 +8,14 @@
     <title>TLOU | Quiz</title>
     <script src="../quiz.js"></script>
 </head>
-<body>
+<body class="bg_quiz">
+    <!-- Botão Voltar para Dashboard -->
+    <button id="btnDashboard" class="btn_voltar" onclick="voltarParaDashboard()">Voltar para Dashboard</button>
     <!-- Início Quiz 1 -->
     <div id="box_quiz" class="quiz">
         <div id="quiz_inicio" class="quiz">
             <div id="iniciar_quiz">
-                <div id="titulo">Pronto para testar seus conhecimentos sobre The Last of Us Part I??</div>
+                <div id="titulo">Pronto para testar seus conhecimentos <br>sobre The Last of Us??</div>
                 <button id="btnInicio" class="btn_iniciar" onclick="iniciar()">Pronto</button>
                 <div class="pontos" id="div_pontos"></div>
                 <button id="registrarnota" onclick="cadastrarNota()">Ir para a dashboard</button>
@@ -30,5 +32,12 @@
         </div>
     </div>
     <!-- Fim Quiz -->
+
+    <!-- Script para voltar à dashboard -->
+    <script>
+        function voltarParaDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
 </body>
 </html>
